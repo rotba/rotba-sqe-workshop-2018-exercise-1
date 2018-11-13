@@ -1,18 +1,23 @@
 import assert from 'assert';
-import {parseCode} from '../src/js/model';
+import {storeData} from '../src/js/model';
+import {getData} from '../src/js/model';
+import {parseCode} from '../src/js/code-analyzer';
 
 describe('The javascript model', () => {
-    it('is storing parsed simple variable declaration correctly', () => {
-        var codeJson = JSON.stringify(parseCode('let a = 1;');
-        storeData(codeJson)
-        assert.equal(data.length,1);
-        var element = data[0];
-        assert.equal(element['Line'],1);
-        assert.equal(element['Type'],'variable declaration');
-        assert.equal(element['Name'],'a');
-        assert.equal(element['Condition'],'');
-        assert.equal(element['Value'],1);
-    });
+    var codeJson = JSON.stringify(parseCode('let a = 1;'));
+    storeData(codeJson);
+    var data = getData();
+    var varaiable_a;
+    for (var i = 0; i < data.length; i++) {
+        if(data[i]['Name'] == 'a'){
+            varaiable_a = data[i];
+        }
+    }
+    assert.equal(varaiable_a['Line'],1);
+    assert.equal(varaiable_a['Type'],'variable declaration');
+    assert.equal(varaiable_a['Name'],'a');
+    assert.equal(varaiable_a['Condition'],'');
+    assert.equal(varaiable_a['Value'],1);
 });
 
 
