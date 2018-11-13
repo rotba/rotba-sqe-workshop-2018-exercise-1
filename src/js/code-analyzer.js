@@ -4,4 +4,5 @@ const parseCode = (codeToParse) => {
     return esprima.parseScript(codeToParse);
 };
 
+
 export {parseCode};
