@@ -1,12 +1,7 @@
 var data = [];
 
-const storeData = (codeJson) => {
-    data = extractData(codeJson);
-};
-
-//Recursive function that extracs all the ements of the code described in the given jsn element
-function extractData(codeJson) {
-    return [];
+function storeData(data_array){
+    data = data_array;
 }
 
 //Function that returns the data
