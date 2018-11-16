@@ -2,8 +2,7 @@ import $ from 'jquery';
 import {parseCode} from './code-analyzer';
 import {extractData} from './code-analyzer';
 import {storeData} from './model';
-import {createHTMLTabel} from './view_handler';
-import {Vcount} from './view_handler';
+var tableColsEnmt = Object.freeze({'Line':0, 'Type':1, 'Name':2, 'Condition':3, 'Value':4});
 
 //var attrNamesEnum = Object.freeze({'Line':'Line', 'Type':'Type', 'Name':'Name', 'Condition':'Condition', 'Value':'Value'});
 
@@ -13,9 +12,27 @@ $(document).ready(function () {
         let parsedCode = parseCode(codeToParse);
         let data_array = extractData(parsedCode);
         storeData(data_array);
-        createHTMLTabel(data_array, document, 'myTable');
-        Vcount(document);
+        var table = document.getElementById('myTable');
+        data_array.sort((a, b) => a['Line']>=b['Line']);
+        insertData(data_array, table);
+
     });
 });
 
+//Inserts the data to the html table
+function insertData(data, table){
+    for(var i =0; i < data.length; i++){
+        var row = table.insertRow(i+1);
+        var lineCell = row.insertCell(tableColsEnmt.Line);
+        var typeCell = row.insertCell(tableColsEnmt.Type);
+        var nameCell = row.insertCell(tableColsEnmt.Name);
+        var conditionCell = row.insertCell(tableColsEnmt.Condition);
+        var valueCell = row.insertCell(tableColsEnmt.Value);
+        lineCell.innerHTML = data[i]['Line'];
+        typeCell.innerHTML = data[i]['Type'];
+        nameCell.innerHTML = data[i]['Name'];
+        conditionCell.innerHTML = data[i]['Condition'];
+        valueCell.innerHTML = data[i]['Value'];
+    }
+}
 //export {attrNamesEnum};
