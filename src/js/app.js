@@ -2,6 +2,10 @@ import $ from 'jquery';
 import {parseCode} from './code-analyzer';
 import {extractData} from './code-analyzer';
 import {storeData} from './model';
+import {createHTMLTabel} from './view_handler';
+import {Vcount} from './view_handler';
+
+//var attrNamesEnum = Object.freeze({'Line':'Line', 'Type':'Type', 'Name':'Name', 'Condition':'Condition', 'Value':'Value'});
 
 $(document).ready(function () {
     $('#codeSubmissionButton').click(() => {
@@ -9,6 +13,9 @@ $(document).ready(function () {
         let parsedCode = parseCode(codeToParse);
         let data_array = extractData(parsedCode);
         storeData(data_array);
-        $('#parsedCode').val(JSON.stringify(parsedCode, null, 2));
+        createHTMLTabel(data_array, document, 'myTable');
+        Vcount(document);
     });
 });
+
+//export {attrNamesEnum};

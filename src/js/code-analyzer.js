@@ -10,12 +10,16 @@ var handlers = {
     ReturnStatement : retHandler
 };
 
-// handlers['FunctionDeclaration'] = funcDeclHandler;
-// handlers['VariableDeclaration'] = varDeclHandler;
-// handlers['ExpressionStatement'] = exspStatHandler;
-// handlers['WhileStatement'] = whileHandler;
-// handlers['IfStatement'] = ifHandler;
-// handlers['ReturnStatement'] = retHandler;
+var dict_type_type_name = {
+    FunctionDeclaration : 'function declaration',
+    VariableDeclaration : 'variable declaration',
+    VariableDeclarator: 'variable declaration',
+    AssignmentExpression: 'assignment expression',
+    WhileStatement : 'while statement',
+    IfStatement : 'if statement',
+    ReturnStatement : 'return statement'
+};
+
 
 const parseCode = (codeToParse) => {
     return esprima.parseScript(codeToParse, {loc: true});
@@ -31,7 +35,7 @@ function extractData(codeJson) {
                 ans.push.apply(ans ,extractData(body_array[i]));
             }
         }else{
-            extractData(codeJson['body']);
+            ans.push.apply(ans ,extractData(codeJson['body']));
         }
     }
     if(codeJson.type in handlers){
@@ -49,7 +53,7 @@ function funcDeclHandler(funcJson) {
     for (var i = 0; i < funcJson.params.length; i++) {
         var param = funcJson.params[i];
         ans.push(
-            create_new_elem(param.loc.start.line,'Param',param.name,'')
+            create_new_elem(param.loc.start.line,'Param',param.name,'', '')
         );
     }
     return ans;
@@ -59,18 +63,34 @@ function varDeclHandler(verDecJson) {
     var ans = [];
     var declerators = verDecJson.declarations;
     for (var i = 0; i < declerators.length; i++) {
+        var value = null;
+        if(declerators[i].init != null){
+            value = declerators[i].init.value;
+        }
         ans.push(
             create_new_elem(
                 declerators[i].loc.start.line,
                 declerators[i].type,
                 declerators[i].id.name,
-                declerators[i].init.value)
+                value,
+                '')
         );
     }
     return ans;
 }
 
 function exspStatHandler(expStatJson) {
+    var ans = [];
+    ans.push(
+        create_new_elem(
+            expStatJson.loc.start.line,
+            expStatJson.expression.type,
+            expStatJson.expression.left.name,
+            expStatJson.expression.right.value,
+            ''
+        )
+    );
+    return ans;
 }
 
 function whileHandler(whileJson) {
@@ -83,11 +103,16 @@ function retHandler(retJson) {
 }
 
 //Function that creates an element given it's neccesary details
-function create_new_elem(line,type, name, value){
+function create_new_elem(line, type, name, value, condition){
+    var type_actual = type;
+    if(type in dict_type_type_name){
+        type_actual =  dict_type_type_name[type];
+    }
     return {
         Line : line,
-        Type: type,
+        Type: type_actual,
         Name: name,
+        Condition: condition,
         Value: value
     };
 }
