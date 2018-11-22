@@ -13,7 +13,7 @@ $(document).ready(function () {
         let data_array = extractData(parsedCode);
         storeData(data_array);
         var table = document.getElementById('myTable');
-        data_array.sort((a, b) => a['Line']>=b['Line']);
+        data_array.sort(function(a, b){return a['Line']-b['Line'];});
         insertData(data_array, table);
 
     });
