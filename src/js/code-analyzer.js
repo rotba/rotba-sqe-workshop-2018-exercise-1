@@ -214,9 +214,7 @@ function handleConsequent(consequentJson){
             ans.push.apply(ans ,extractData(body_array[i]));
         }
     }else{
-        if(consequentJson.type in handlers){
-            ans.push.apply(ans ,handlers[consequentJson.type](consequentJson));
-        }
+        ans.push.apply(ans ,handlers[consequentJson.type](consequentJson));
     }
     return ans;
 }
