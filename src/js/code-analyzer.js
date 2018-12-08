@@ -99,7 +99,7 @@ function exspStatHandler(expStatJson) {
         create_new_elem(
             expStatJson.loc.start.line,
             expStatJson.expression.type,
-            expStatJson.expression.left.name,
+            handleExp(expStatJson.expression.left),
             handleExp(expStatJson.expression.right),
             ''
         )

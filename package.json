@@ -34,23 +34,25 @@
         "webpack": "^4.12.2",
         "webpack-cli": "^2.1.4"
     },
-	"ava": {
-    "files": [
-      "test/**/*.spec.js"
-    ],
-    "source": [
-      "src/**/*.{js,jsx}"
-    ],
-    "concurrency": 5,
-    "require": [
-      "babel-core/register",
-      "babel-polyfill",
-      "ignore-styles",
-      "./test/setup.js"
-    ],
-    "babel": {
-      "babelrc": true,
-      "plugins": ["transform-es2015-modules-commonjs"]
+    "ava": {
+        "files": [
+            "test/**/*.spec.js"
+        ],
+        "source": [
+            "src/**/*.{js,jsx}"
+        ],
+        "concurrency": 5,
+        "require": [
+            "babel-core/register",
+            "babel-polyfill",
+            "ignore-styles",
+            "./test/setup.js"
+        ],
+        "babel": {
+            "babelrc": true,
+            "plugins": [
+                "transform-es2015-modules-commonjs"
+            ]
+        }
     }
-  }
 }
